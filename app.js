@@ -1,50 +1,90 @@
-// OpenWeatherMap API Key
 const API_KEY = "ae99b330ae355427d7da648450283ccb";
 const API_URL = "https://api.openweathermap.org/data/2.5/weather";
 
-// Fetch weather function
-function getWeather(city) {
+const searchBtn = document.getElementById("search-btn");
+const cityInput = document.getElementById("city-input");
+const weatherDisplay = document.getElementById("weather-display");
 
-    const url = `${API_URL}?q=${city}&appid=${API_KEY}&units=metric`;
-
-    axios.get(url)
-        .then(function(response) {
-            displayWeather(response.data);
-        })
-        .catch(function(error) {
-            document.getElementById("weather-display").innerHTML =
-                '<p class="loading">City not found. Try again.</p>';
-        });
+/* Loading */
+function showLoading() {
+    weatherDisplay.innerHTML = `
+        <div class="loading-container">
+            <div class="spinner"></div>
+            <p>Loading weather...</p>
+        </div>
+    `;
 }
 
-// Display weather data
+/* Error */
+function showError(message) {
+    weatherDisplay.innerHTML = `
+        <div class="error-message">
+            ⚠️ ${message}
+        </div>
+    `;
+}
+
+/* Display Weather */
 function displayWeather(data) {
-
-    const cityName = data.name;
-    const temperature = Math.round(data.main.temp);
-    const description = data.weather[0].description;
-    const icon = data.weather[0].icon;
-    const iconUrl = `https://openweathermap.org/img/wn/${icon}@2x.png`;
-
     const weatherHTML = `
         <div class="weather-info">
-            <h2 class="city-name">${cityName}</h2>
-            <img src="${iconUrl}" alt="${description}" class="weather-icon">
-            <div class="temperature">${temperature}°C</div>
-            <p class="description">${description}</p>
+            <h2>${data.name}</h2>
+            <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" 
+                 alt="${data.weather[0].description}" 
+                 class="weather-icon">
+            <div class="temperature">${Math.round(data.main.temp)}°C</div>
+            <p class="description">${data.weather[0].description}</p>
         </div>
     `;
 
-    document.getElementById("weather-display").innerHTML = weatherHTML;
+    weatherDisplay.innerHTML = weatherHTML;
+    cityInput.focus();
 }
 
-// Search button click
-document.getElementById("search-btn").addEventListener("click", function() {
-    const city = document.getElementById("city-input").value.trim();
-    if (city !== "") {
-        getWeather(city);
+/* Async Weather Fetch */
+async function getWeather(city) {
+    showLoading();
+    searchBtn.disabled = true;
+    searchBtn.textContent = "Searching...";
+
+    const url = `${API_URL}?q=${city}&appid=${API_KEY}&units=metric`;
+
+    try {
+        const response = await axios.get(url);
+        displayWeather(response.data);
+    } catch (error) {
+        if (error.response && error.response.status === 404) {
+            showError("City not found. Check spelling and try again.");
+        } else {
+            showError("Something went wrong. Please try later.");
+        }
+    } finally {
+        searchBtn.disabled = false;
+        searchBtn.textContent = "🔍 Search";
     }
+}
+
+/* Search Button Click */
+searchBtn.addEventListener("click", function () {
+    const city = cityInput.value.trim();
+
+    if (!city) {
+        showError("Please enter a city name.");
+        return;
+    }
+
+    if (city.length < 2) {
+        showError("City name too short.");
+        return;
+    }
+
+    getWeather(city);
+    cityInput.value = "";
 });
 
-// Default city
-getWeather("Paris");
+/* Enter Key Support */
+cityInput.addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+        searchBtn.click();
+    }
+});

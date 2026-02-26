@@ -24,65 +24,51 @@ body {
     width: 100%;
 }
 
-h1 {
-    font-size: 2.5rem;
-    color: #333;
-    margin-bottom: 10px;
-}
-
-.tagline {
-    color: #666;
-    margin-bottom: 20px;
-}
-
+/* Search Section */
 .search-section {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    display: flex;
+    gap: 10px;
 }
 
 #city-input {
-    padding: 10px;
-    width: 65%;
-    border-radius: 8px;
-    border: 1px solid #ccc;
+    padding: 12px 20px;
+    border-radius: 25px;
+    border: 2px solid #ddd;
+    flex: 1;
+    font-size: 1rem;
     outline: none;
+    transition: 0.3s;
+}
+
+#city-input:focus {
+    border-color: #667eea;
 }
 
 #search-btn {
-    padding: 10px 15px;
-    border-radius: 8px;
-    border: none;
-    background: #667eea;
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
     color: white;
+    border: none;
+    border-radius: 25px;
     cursor: pointer;
+    transition: 0.3s;
 }
 
 #search-btn:hover {
-    background: #5a6fd8;
+    transform: scale(1.05);
+    opacity: 0.9;
 }
 
-.loading {
-    color: #667eea;
-    font-size: 1.1rem;
+#search-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
-.weather-info {
-    animation: fadeIn 0.5s ease-in;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.city-name {
-    font-size: 2rem;
-    margin-bottom: 10px;
+/* Weather Display */
+.weather-icon {
+    width: 100px;
+    height: 100px;
 }
 
 .temperature {
@@ -97,7 +83,37 @@ h1 {
     text-transform: capitalize;
 }
 
-.weather-icon {
-    width: 100px;
-    height: 100px;
+/* Error Message */
+.error-message {
+    background: #ffe5e5;
+    color: #b00020;
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 6px solid red;
+}
+
+/* Loading */
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.welcome-message {
+    color: #555;
 }
