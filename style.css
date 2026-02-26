@@ -20,7 +20,7 @@ body {
     border-radius: 20px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     text-align: center;
-    max-width: 500px;
+    max-width: 600px;
     width: 100%;
 }
 
@@ -56,7 +56,7 @@ body {
 }
 
 #search-btn:hover {
-    transform: scale(1.05);
+    transform: translateY(-3px);
     opacity: 0.9;
 }
 
@@ -68,28 +68,18 @@ body {
 /* Weather Display */
 .weather-icon {
     width: 100px;
-    height: 100px;
 }
 
 .temperature {
     font-size: 3rem;
-    color: #667eea;
     font-weight: bold;
+    color: #667eea;
     margin: 15px 0;
 }
 
 .description {
-    font-size: 1.2rem;
     text-transform: capitalize;
-}
-
-/* Error Message */
-.error-message {
-    background: #ffe5e5;
-    color: #b00020;
-    padding: 15px;
-    border-radius: 10px;
-    border-left: 6px solid red;
+    font-size: 1.2rem;
 }
 
 /* Loading */
@@ -114,6 +104,71 @@ body {
     to { transform: rotate(360deg); }
 }
 
-.welcome-message {
-    color: #555;
+/* Error */
+.error-message {
+    background: #ffe5e5;
+    color: #b00020;
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 6px solid red;
+}
+
+/* Forecast Section */
+.forecast-section {
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 2px solid #eee;
+}
+
+.forecast-title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.forecast-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+}
+
+.forecast-card {
+    background: linear-gradient(135deg, #f8f9ff, #eef1ff);
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    transition: 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.forecast-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.forecast-card h4 {
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.forecast-temp {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #667eea;
+    margin: 10px 0;
+}
+
+.forecast-card img {
+    width: 60px;
+}
+
+.forecast-card p {
+    font-size: 0.9rem;
+    color: #666;
+    text-transform: capitalize;
+}
+
+@media (max-width: 768px) {
+    .forecast-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
